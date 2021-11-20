@@ -1,0 +1,104 @@
+﻿<Window x:Class="v2rayReverseProxy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Converters="clr-namespace:v2rayReverseProxy.Converters"
+        xmlns:local="clr-namespace:v2rayReverseProxy"
+        mc:Ignorable="d"
+        Title="v2ray反向代理配置一键生成" Height="500" MinHeight="500" Width="600" MinWidth="700" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel Margin="4">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <TextBlock Padding="5">
+                <Hyperlink NavigateUri="https://space.bilibili.com/10623171" Click="Hyperlink_Click">关注作者</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel>
+            <GroupBox Header="反向代理主要配置">
+                <StackPanel>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="服务端域名(或IP)" Padding="0,4" Grid.Column="0"/>
+                        <TextBox DockPanel.Dock="Right" Text="{Binding ReverseAddress}" VerticalContentAlignment="Center" Grid.Column="1"/>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="端口" Padding="0,4" Grid.Column="0"/>
+                        <TextBox DockPanel.Dock="Right" Text="{Binding ReversePort}" VerticalContentAlignment="Center" Grid.Column="1" ToolTip="Vmess协议端口"/>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="用户ID" Padding="0,4" Grid.Column="0"/>
+                        <DockPanel Grid.Column="1">
+                            <Button Content="生成" DockPanel.Dock="Right" Padding="20,0" Click="ButtonCreateNewGuid_Cilck" Tag="0"/>
+                            <TextBox DockPanel.Dock="Right" Text="{Binding ReverseGuid}" VerticalContentAlignment="Center"/>
+                        </DockPanel>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="家里或公网服务器配置">
+                <StackPanel>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="本地socks5代理端口" Padding="0,4" Grid.Column="0"/>
+                        <TextBox DockPanel.Dock="Right" Text="{Binding Socks5Port}" VerticalContentAlignment="Center" Grid.Column="1"/>
+                    </Grid>
+                    <CheckBox Content="生成的v2ray配置带Info输出 (方便查看是否连接成功)" Margin="5,10" IsChecked="{Binding LogInfo}"/>
+                    <GroupBox Margin="0,10,0,0">
+                        <GroupBox.Header>
+                            <CheckBox Content="接受另一个v2ray" IsChecked="{Binding AcceptAnotherInbound}"/>
+                        </GroupBox.Header>
+                        <StackPanel Visibility="{Binding AcceptAnotherInbound,Converter={StaticResource BoolToVisibilityConverter}}">
+
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="端口" Padding="0,4" Grid.Column="0"/>
+                                <TextBox DockPanel.Dock="Right" Text="{Binding AnotherPort}" VerticalContentAlignment="Center" Grid.Column="1" ToolTip="Vmess协议端口"/>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="用户ID" Padding="0,4" Grid.Column="0"/>
+                                <DockPanel Grid.Column="1">
+                                    <Button Content="生成" DockPanel.Dock="Right" Padding="20,0" Click="ButtonCreateNewGuid_Cilck" Tag="1"/>
+                                    <TextBox DockPanel.Dock="Right" Text="{Binding AnotherGuid}" VerticalContentAlignment="Center"/>
+                                </DockPanel>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="额外ID(alterId)" Padding="0,4" Grid.Column="0"/>
+                                <TextBox DockPanel.Dock="Right" Text="{Binding AnotherAlterId}" VerticalContentAlignment="Center" Grid.Column="1"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+            <Button Content="生成配置" Padding="10" Margin="5,10,5,0" Click="ButtonCreateConfig_Click"/>
+        </StackPanel>
+    </DockPanel>
+</Window>
